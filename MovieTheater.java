@@ -33,9 +33,9 @@ public class MovieTheater {
                 case 2:
                     reserveSeat(scanner);
                     break;
-//                case 3:
-//                    cancelSeat(scanner);
-//                    break;
+                case 3:
+                    cancelSeat(scanner);
+                    break;
                 case 4:
                     System.out.println("Exiting...");
                     break;
@@ -80,10 +80,46 @@ public class MovieTheater {
                 System.out.println("Seat reserved successfully!");
             } else {
                 System.out.println("Sorry, this seat is already taken.");
+                suggestAvailableSeat();
             }
         } else {
             System.out.println("Invalid seat position. Please try again.");
         }
     }
 
+    // Suggest an available seat if the requested one is taken
+    private static void suggestAvailableSeat() {
+        System.out.println("Available seats are:");
+        boolean found = false;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (seats[i][j] == 'O') {
+                    System.out.println("Seat at Row " + (i + 1) + ", Column " + (j + 1));
+                    found = true;
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("Sorry, no seats are available.");
+        }
+    }
+
+    // Cancel a reservation
+    private static void cancelSeat(Scanner scanner) {
+        System.out.println("Enter the row (1-" + ROWS + "): ");
+        int row = scanner.nextInt() - 1;
+        System.out.println("Enter the column (1-" + COLS + "): ");
+        int col = scanner.nextInt() - 1;
+
+        if (row >= 0 && row < ROWS && col >= 0 && col < COLS) {
+            if (seats[row][col] == 'X') {
+                seats[row][col] = 'O';
+                System.out.println("Reservation canceled successfully.");
+            } else {
+                System.out.println("This seat is not reserved. Please verify that it is the right seat. ");
+            }
+        } else {
+            System.out.println("Invalid seat position. Please try again.");
+        }
+    }
 }
