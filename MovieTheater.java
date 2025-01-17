@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MovieTheater {
 
-//    Creating 2D array for movie theater sitting
+    // Creating 2D array for movie theater sitting
     private static final int ROWS = 5;
     private static final int COLS = 5;
     private static char[][] seats = new char[ROWS][COLS];
@@ -13,12 +13,38 @@ public class MovieTheater {
     public static void main(String[] args) {
         initializeSeats();
 
-//        Create menu/switch case for viewing, reserving, returning seats
+        // Create menu/switch case for viewing, reserving, returning seats
         Scanner scanner = new Scanner(System.in);
         int option;
 
+        do {
+            System.out.println("\n Movie Theater Reservation System");
+            System.out.println("1. View seating chart");
+            System.out.println("2. Reserve a seat");
+            System.out.println("3. Cancel a reservation");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            option = scanner.nextInt();
 
+            switch (option) {
+                case 1:
+                    viewSeatingChart();
+                    break;
+                case 2:
+                    reserveSeat(scanner);
+                    break;
+//                case 3:
+//                    cancelSeat(scanner);
+//                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        } while (option != 4);
     }
+
 
     // Initialize the seats, all are empty
     private static void initializeSeats() {
@@ -29,5 +55,35 @@ public class MovieTheater {
         }
     }
 
+    // View the current seating chart
+    private static void viewSeatingChart() {
+        System.out.println("\nSeating Chart:");
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                System.out.print(seats[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+
+    // Reserve a seat if available
+    private static void reserveSeat(Scanner scanner) {
+        System.out.println("Enter the row (1-" + ROWS + "): ");
+        int row = scanner.nextInt() - 1;
+        System.out.println("Enter the column (1-" + COLS + "): ");
+        int col = scanner.nextInt() - 1;
+
+        if (row >= 0 && row < ROWS && col >= 0 && col < COLS) {
+            if (seats[row][col] == 'O') {
+                seats[row][col] = 'X';
+                System.out.println("Seat reserved successfully!");
+            } else {
+                System.out.println("Sorry, this seat is already taken.");
+            }
+        } else {
+            System.out.println("Invalid seat position. Please try again.");
+        }
+    }
 
 }
